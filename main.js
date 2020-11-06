@@ -19,11 +19,11 @@ const SQL_BOOK_DETAILS = 'select * from book2018 where book_id = ?'
 
 const mkQuery = (sqlStmt, pool) => {
 	const f = async (params) => {
-		// get a connection from the pool
+		//get a connection from the pool
 		const conn = await pool.getConnection()
 
 		try {
-			// Execute the query with the parameter
+			//Execute the query with the parameter
 			const results = await pool.query(sqlStmt, params)
 			return results[0]
 		} catch(e) {
