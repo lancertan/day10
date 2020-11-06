@@ -1,0 +1,23 @@
+<h2>Letter {{ q }}</h2>
+{{#if hasResults}}
+    {{#each books}}
+            <div><a href="/details/{{this.book_id}}">{{ this.title }}</a></div>
+    {{/each}}
+    <table>
+    
+    {{#if hasLess}}
+        <form method="GET" action="/list">
+        <input type="hidden" name="offset" id="offset" value="{{ prevOffset }}">
+        <td><button type"submit" name="q" value="{{q}}">Previous</button></td>
+        </form>
+    {{/if}}
+    {{#if hasMore}}
+        <form method="GET" action="/list">
+        <input type="hidden" name="offset" id="offset" value="{{ nextOffset }}">
+        <td><button type"submit" name="q" value="{{q}}">Next</button></td> 
+        </form>
+    {{/if}}
+        </table>
+{{else}}
+<h3>Your search return no result</h3>
+{{/if}}
