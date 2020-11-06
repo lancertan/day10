@@ -11,8 +11,11 @@
         <div><h2>{{details.title}}</h2></div>
         <div><h3>by {{details.authors}}</h3></div>
         <div>{{details.description}}</div>
-        <br>
-        <div>Find Review</div>
+        <br>        
+        <div><a href="../reviews/{{details.title}}/{{details.authors}}">Find Review</a></div>
     </td>
 </tr>
 </table>
+<form method="GET" action="/">
+    <button type"submit">Home</button>
+</form>

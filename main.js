@@ -4,9 +4,10 @@ const handlebars = require('express-handlebars')
 const fetch = require('node-fetch')
 const withQuery = require('with-query').default
 const mysql = require('mysql2/promise')
+const morgan = require('morgan')
 
 const API_KEY = process.env.API_KEY || ""
-const BASE_URL = 'https://api.nytimes.com/svc/books/v3/lists.json'
+const BASE_URL = 'https://api.nytimes.com/svc/books/v3/reviews.json'
 
 //configure the PORT
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.PORT) || 3000
@@ -66,6 +67,7 @@ const getDetails = mkQuery(SQL_BOOK_DETAILS, pool)
 
 //create an instance of express
 const app = express()
+app.use(morgan('combined'))
 
 //configure handlebars
 app.engine('hbs', handlebars({ defaultLayout: 'default.hbs' }))
@@ -131,35 +133,35 @@ app.get('/details/:book_id', async (req, resp) => {
 	}
 })
 
-app.get('/reviews', 
+app.get('/reviews/:title/:author', 
   async (req, resp) => {
-    const title = req.query['title']
-    const author = req.query['author']
+    const title = req.params.title
+    const author = req.params.author
+    const authors =  author.replaceAll(',',' and') 
     
-    console.info('title: ', title)
-    console.info('author: ', author)
-
     //construct the url with the query parameters
     const url = withQuery(BASE_URL, {
-        api-key: API_KEY,
+        'api-key': API_KEY,
         title: title,
-        author: author
+        author: authors
     })
 
     let result = await fetch(url)
     result = await result.json()
-
-    /*const mChar = result.data.results
+    
+    const hasReview = result.num_results
+    const copyright = result.copyright
+    const review = result.results
+   
     .map( d => {
-            return { id: d.id, name: d.name }
+            return { book_title: d.book_title, book_author: d.book_author, byline: d.byline, publication_dt: d.publication_dt, summary: d.summary, url: d.url }
         }
     )
-    //const mChar = result.data.results
 
-  console.info(mChar)*/
+  console.info(review)
   resp.status(200)
   resp.type('text/html')
-  resp.render('reviews', { })
+  resp.render('reviews', { hasReview, review, copyright })
 })
 
 //start the server
