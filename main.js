@@ -57,7 +57,8 @@ const pool = mysql.createPool({
 	database: 'goodreads',
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
-	connectionLimit: 4
+  connectionLimit: 4,
+  timezone: '+08:00'
 })
 
 //create queries
@@ -123,10 +124,32 @@ app.get('/details/:book_id', async (req, resp) => {
     d.genres = d.genres.replaceAll('|',', ') 
     d.authors = d.authors.replaceAll('|',', ')
     
-  	resp.status(200)
-		resp.type('text/html')
-		resp.render('details', { details:d })
-	} catch(e) {
+    resp.status(200)
+    resp.format({
+      'text/html': () => {
+        resp.type('text/html')
+        resp.render('details', { details:d })
+      },
+      'application/json': () => {
+        resp.type('application/json')
+        resp.json({
+          bookId: d.book_id,
+          title: d.title,
+          authors: d.authors,
+          summary: d.description,
+          pages: d.pages,
+          rating: d.rating,
+          ratingCount: d.rating_count,
+          genre: d.genres.split(', ')
+        })
+      },
+      'default': () => {
+        resp.status(406)
+        resp.type('text/plain')
+        resp.send('406 Error. HTTP Request Not Acceptable.')
+      }
+    })
+  } catch(e) {
 		console.error('ERROR: ', e)
 		resp.status(500)
 		resp.end()
