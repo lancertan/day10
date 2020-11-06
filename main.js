@@ -35,7 +35,7 @@ const mkQuery = (sqlStmt, pool) => {
 	return f
 }
 
-/*const startApp = async (app, pool) => {
+const startApp = async (app, pool) => {
 	const conn = await pool.getConnection()
 	try {
 		console.info('Pinging database...')
@@ -48,7 +48,7 @@ const mkQuery = (sqlStmt, pool) => {
 	} finally {
 		conn.release()
 	}
-}*/
+}
 
 //create connection pool
 const pool = mysql.createPool({
@@ -188,7 +188,5 @@ app.get('/reviews/:title/:author',
 })
 
 //start the server
-app.listen(PORT, () => {
-    console.info(`Application started on port ${PORT} at ${new Date()}`)
-  }
-)
+
+startApp(app, pool)

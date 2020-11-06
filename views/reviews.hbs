@@ -1,15 +1,20 @@
 {{#if hasReview}}
     {{#each review}}
-        <div><h2>{{this.book_title}}</h2></div>
-        <div>by {{this.book_author}}</div>
-        <div>Reviewer: {{this.byline}}</div>
-        <div>Date: {{this.publication_dt}}</div>
-        <div>{{this.summary}}</div>
-        <div><a href="{{this.url}}" target="_blank">Full Review</a></div>
+        <div>
+            <div><h2>{{this.book_title}}</h2></div>
+            <div>by {{this.book_author}}</div>
+            <div>Reviewer: {{this.byline}}</div>
+            <div>Date: {{this.publication_dt}}</div>
+            <div>{{this.summary}}</div>
+            <div><a href="{{this.url}}" target="_blank">Full Review</a></div>
+        </div>
     {{/each}}
 {{else}}
     <h3>There are no reviews.</h3>
 
 {{/if}}
-
+<br>
 <div>{{copyright}}</div>
+<form method="GET" action="/">
+    <button type"submit" class="btn btn-outline-secondary">Home</button>
+</form>

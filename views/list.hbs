@@ -8,13 +8,13 @@
     {{#if hasLess}}
         <form method="GET" action="/list">
         <input type="hidden" name="offset" id="offset" value="{{ prevOffset }}">
-        <td><button type"submit" name="q" value="{{q}}">Previous</button></td>
+        <td><button type"submit" name="q" value="{{q}}" class="btn btn-outline-secondary">Previous</button></td>
         </form>
     {{/if}}
     {{#if hasMore}}
         <form method="GET" action="/list">
         <input type="hidden" name="offset" id="offset" value="{{ nextOffset }}">
-        <td><button type"submit" name="q" value="{{q}}">Next</button></td> 
+        <td><button type"submit" name="q" value="{{q}}" class="btn btn-outline-secondary">Next</button></td> 
         </form>
     {{/if}}
         </table>
@@ -23,5 +23,5 @@
 {{/if}}
 
 <form method="GET" action="/">
-    <button type"submit">Home</button>
+    <button type"submit" class="btn btn-outline-secondary">Home</button>
 </form>
